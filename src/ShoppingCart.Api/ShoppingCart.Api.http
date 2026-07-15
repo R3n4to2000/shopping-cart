@@ -1,6 +1,79 @@
-@ShoppingCart.Api_HostAddress = http://localhost:5048
+@baseUrl = http://localhost:5048
+@cartId = COLE_AQUI_O_ID_DO_CARRINHO
 
-GET {{ShoppingCart.Api_HostAddress}}/weatherforecast/
+### Listar produtos
+
+GET {{baseUrl}}/api/products
 Accept: application/json
 
-###
+### Criar carrinho
+
+POST {{baseUrl}}/api/carts
+Accept: application/json
+
+### Consultar carrinho
+
+GET {{baseUrl}}/api/carts/{{cartId}}
+Accept: application/json
+
+### Adicionar produto
+
+POST {{baseUrl}}/api/carts/{{cartId}}/items
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 1
+}
+
+### Somar quantidade do produto
+
+POST {{baseUrl}}/api/carts/{{cartId}}/items
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 2
+}
+
+### Substituir quantidade
+
+PUT {{baseUrl}}/api/carts/{{cartId}}/items/1
+Content-Type: application/json
+
+{
+  "quantity": 5
+}
+
+### Aplicar cupom
+
+PUT {{baseUrl}}/api/carts/{{cartId}}/coupon
+Content-Type: application/json
+
+{
+  "code": "10OFF"
+}
+
+### Trocar cupom
+
+PUT {{baseUrl}}/api/carts/{{cartId}}/coupon
+Content-Type: application/json
+
+{
+  "code": "15OFF"
+}
+
+### Remover cupom
+
+DELETE {{baseUrl}}/api/carts/{{cartId}}/coupon
+Accept: application/json
+
+### Remover produto
+
+DELETE {{baseUrl}}/api/carts/{{cartId}}/items/1
+Accept: application/json
+
+### Checkout
+
+POST {{baseUrl}}/api/carts/{{cartId}}/checkout
+Accept: application/json
