@@ -77,3 +77,58 @@ Accept: application/json
 
 POST {{baseUrl}}/api/carts/{{cartId}}/checkout
 Accept: application/json
+
+### Erro — quantidade igual a zero
+
+POST {{baseUrl}}/api/carts/{{cartId}}/items
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 0
+}
+
+### Erro — quantidade maior que o estoque
+
+POST {{baseUrl}}/api/carts/{{cartId}}/items
+Content-Type: application/json
+
+{
+  "productId": 1,
+  "quantity": 9
+}
+
+### Erro — produto inexistente
+
+POST {{baseUrl}}/api/carts/{{cartId}}/items
+Content-Type: application/json
+
+{
+  "productId": 999,
+  "quantity": 1
+}
+
+### Erro — cupom inexistente
+
+PUT {{baseUrl}}/api/carts/{{cartId}}/coupon
+Content-Type: application/json
+
+{
+  "code": "INVALIDO"
+}
+
+### Erro — carrinho inexistente
+
+GET {{baseUrl}}/api/carts/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+### Erro — tentativa de alterar após checkout
+### Execute o checkout antes desta chamada
+
+POST {{baseUrl}}/api/carts/{{cartId}}/items
+Content-Type: application/json
+
+{
+  "productId": 2,
+  "quantity": 1
+}
