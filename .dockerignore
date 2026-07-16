@@ -1,0 +1,16 @@
+.git
+.github
+.vs
+.vscode
+.idea
+
+**/bin
+**/obj
+
+tests
+frontend
+
+.env
+.env.*
+
+*.md

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using ShoppingCart.Api;
 using ShoppingCart.Api.ExceptionHandling;
+using ShoppingCart.Api.Extensions;
 using ShoppingCart.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,15 +16,12 @@ builder.Services
         options.InvalidModelStateResponseFactory = context =>
         {
             var problemDetails =
-                new ValidationProblemDetails(
-                    context.ModelState)
+                new ValidationProblemDetails(context.ModelState)
                 {
                     Status = StatusCodes.Status400BadRequest,
                     Title = "Dados de entrada inválidos.",
-                    Detail =
-                        "Corrija os campos informados e tente novamente.",
-                    Instance =
-                        context.HttpContext.Request.Path
+                    Detail = "Corrija os campos informados e tente novamente.",
+                    Instance = context.HttpContext.Request.Path
                 };
 
             problemDetails.Extensions["code"] =
@@ -63,7 +61,7 @@ builder.Services.AddInfrastructure(
 var allowedOrigins = builder.Configuration
     .GetSection("Cors:AllowedOrigins")
     .Get<string[]>()
-    ?? new[] { "http://localhost:5173" };
+    ?? ["http://localhost:5173"];
 
 builder.Services.AddCors(options =>
 {
@@ -95,6 +93,8 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
+await app.ApplyDatabaseMigrationsAsync();
+
 app.UseExceptionHandler();
 
 app.UseStatusCodePages();
@@ -113,7 +113,15 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+var httpsRedirectionEnabled =
+    builder.Configuration.GetValue(
+        "HttpsRedirection:Enabled",
+        true);
+
+if (httpsRedirectionEnabled)
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors(frontendCorsPolicy);
 
