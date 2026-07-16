@@ -1,75 +1,63 @@
-# React + TypeScript + Vite
+# Carrinho de Compras - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend React com TypeScript e Vite para consumir a API REST do teste técnico Shopping Cart.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js compatível com o projeto.
+- SQL Server em execução para a API.
+- Backend `ShoppingCart.Api` configurado e com banco/migrations aplicados.
 
-## React Compiler
+## Configuração
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Instale as dependências do frontend:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Crie o arquivo `.env` a partir do exemplo:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+cp .env.example .env
+```
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Configure a URL da API:
 
+```env
+VITE_API_URL=http://localhost:5000
+```
+
+Se executar a API pelo perfil padrão `http` do `launchSettings.json`, ajuste para `http://localhost:5048` ou suba a API explicitamente em `http://localhost:5000`.
+
+## Executando a API
+
+A partir da raiz do repositório:
+
+```bash
+dotnet run --project src/ShoppingCart.Api/ShoppingCart.Api.csproj --urls http://localhost:5000
+```
+
+A API depende do SQL Server configurado no projeto backend.
+
+## Executando o frontend
+
+A partir da pasta `frontend`:
+
+```bash
+npm run dev
+```
+
+O Vite sobe por padrão em:
+
+```text
+http://localhost:5173
+```
+
+## Build
+
+Para validar TypeScript e gerar o build de produção:
+
+```bash
+npm run build
 ```
