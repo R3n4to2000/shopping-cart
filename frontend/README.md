@@ -53,11 +53,3 @@ O Vite sobe por padrão em:
 ```text
 http://localhost:5173
 ```
-
-## Build
-
-Para validar TypeScript e gerar o build de produção:
-
-```bash
-npm run build
-```
